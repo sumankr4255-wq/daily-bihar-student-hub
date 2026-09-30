@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Bihar Student Hub</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary2: #1d4ed8;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --danger: #dc2626;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      color: var(--primary);
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .theme-btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .menu-btn {
+      display: none;
+      font-size: 24px;
+      border: 0;
+      background: none;
+      color: var(--text);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 65px 20px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      max-width: 750px;
+      margin: auto;
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    .hero-buttons {
+      margin-top: 25px;
+    }
+
+    .btn {
+      display: inline-block;
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero .btn {
+      background: white;
+      color: #2563eb;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: var(--primary2);
+      color: white;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section {
+      padding: 45px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .section-title h2 {
+      font-size: 30px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .icon {
+      font-size: 35px;
+      margin-bottom: 8px;
+    }
+
+    .solver {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 25px;
+    }
+
+    textarea,
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      border-radius: 8px;
+      outline: none;
+      margin: 7px 0 14px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .solver-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .answer {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border-left: 5px solid var(--primary);
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .answer h3 {
+      color: var(--primary);
+    }
+
+    .upload-box {
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    .upload-box input {
+      display: none;
+    }
+
+    .preview {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 10px;
+      display: none;
+      margin: 15px auto;
+    }
+
+    .quiz-question {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+    }
+
+    .timer {
+      text-align: center;
+    }
+
+    .timer-display {
+      font-size: 55px;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 15px;
+    }
+
+    .timer-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notes-list {
+      margin-top: 20px;
+    }
+
+    .note {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .delete-btn {
+      background: var(--danger);
+      color: white;
+      border: 0;
+      border-radius: 6px;
+      padding: 5px 9px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 30px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 30px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .creator {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        width: 100%;
+        background: var(--card);
+        padding: 20px;
+        flex-direction: column;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section-title h2 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">📚 Daily Bihar Student Hub</div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#solver">Question Solver</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#subjects">Subjects</a></li>
+      <li><a href="#timer">Timer</a></li>
+      <li><a href="#notes">Notes</a></li>
+      <li>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark</button>
+      </li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="home">
+    <h1>🎓 Daily Bihar Student Hub</h1>
+    <p>
+      Bihar के विद्यार्थियों के लिए Question Solver, OCR Scan,
+      Quiz, Daily Questions, Notes, Study Timer और Coding सीखने का एक स्थान।
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#solver" class="btn">🤖 Question Solve करें</a>
+      <a href="#subjects" class="btn">📚 Subjects देखें</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>🚀 Student Tools</h2>
+        <p>पढ़ाई के लिए उपयोगी tools एक ही जगह</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🤖</div>
+          <h3>AI Question Solver</h3>
+          <p>Question लिखें और आसान explanation के लिए solve button दबाएँ।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📷</div>
+          <h3>OCR / Scan</h3>
+          <p>Question की photo upload करके उसे website में इस्तेमाल करें।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">📝</div>
+          <h3>Quiz Generator</h3>
+          <p>अपनी पढ़ाई को quiz के माध्यम से practice करें।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">⏱️</div>
+          <h3>Study Timer</h3>
+          <p>Focus के लिए built-in study timer इस्तेमाल करें।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="solver">
+    <div class="container">
+      <div class="section-title">
+        <h2>🤖 Question Solver</h2>
+        <p>अपना question नीचे लिखें</p>
+      </div>
+
+      <div class="solver">
+        <label>Subject चुनें</label>
+        <select id="subject">
+          <option>Science</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Biology</option>
+          <option>Maths</option>
+          <option>English</option>
+          <option>Hindi</option>
+          <option>GK</option>
+          <option>Coding</option>
+        </select>
+
+        <label>Question</label>
+        <textarea id="question" rows="6" placeholder="जैसे: प्रकाश संश्लेषण क्या है?"></textarea>
+
+        <div class="solver-actions">
+          <button class="btn" onclick="solveQuestion()">🤖 Solve Question</button>
+          <button class="btn" onclick="clearQuestion()">🗑️ Clear</button>
+        </div>
+
+        <div class="answer" id="answer">
+          <h3>💡 Answer</h3>
+          <p id="answerText">यहाँ आपका answer दिखाई देगा।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>📷 OCR / Question Scan</h2>
+        <p>Question की image upload करें</p>
+      </div>
+
+      <div class="card">
+        <label class="upload-box">
+          📷
+          <br>
+          <strong>Image चुनने के लिए यहाँ क्लिक करें</strong>
+          <input type="file" id="imageInput" accept="image/*" onchange="previewImage(event)" />
+        </label>
+
+        <img id="preview" class="preview" />
+
+        <p id="ocrStatus" style="text-align:center;color:var(--muted);">
+          Image upload करने के बाद preview दिखाई देगा।
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="quiz">
+    <div class="container">
+      <div class="section-title">
+        <h2>📝 Daily Quiz</h2>
+        <p>अपनी knowledge check करें</p>
+      </div>
+
+      <div class="card">
+        <div class="quiz-question" id="quizQuestion">भारत की राजधानी क्या है?</div>
+
+        <button class="option" onclick="checkAnswer(this,'नई दिल्ली')">A. नई दिल्ली</button>
+        <button class="option" onclick="checkAnswer(this,'पटना')">B. पटना</button>
+        <button class="option" onclick="checkAnswer(this,'मुंबई')">C. मुंबई</button>
+        <button class="option" onclick="checkAnswer(this,'कोलकाता')">D. कोलकाता</button>
+
+        <p id="quizResult"></p>
+        <br />
+        <button class="btn" onclick="nextQuestion()">➡️ Next Question</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>📅 Daily Questions</h2>
+        <p>आज के practice questions</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>🔬 Science</h3>
+          <p>प्रकाश संश्लेषण में पौधे कौन-सी गैस लेते हैं?</p>
+        </div>
+
+        <div class="card">
+          <h3>➗ Maths</h3>
+          <p>यदि 2x + 5 = 15 है, तो x का मान क्या होगा?</p>
+        </div>
+
+        <div class="card">
+          <h3>🌍 GK</h3>
+          <p>भारत का राष्ट्रीय पशु कौन-सा है?</p>
+        </div>
+
+        <div class="card">
+          <h3>💻 Coding</h3>
+          <p>HTML का पूरा नाम क्या है?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="subjects">
+    <div class="container">
+      <div class="section-title">
+        <h2>📚 Subjects</h2>
+        <p>अपना subject चुनें</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">⚛️</div>
+          <h3>Physics</h3>
+          <p>Mechanics, Gravity, Motion, Electricity आदि।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🧪</div>
+          <h3>Chemistry</h3>
+          <p>Atoms, Molecules, Reactions और Chemistry concepts।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🧬</div>
+          <h3>Biology</h3>
+          <p>Cell, Human Body, Plants और Biology concepts।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">➗</div>
+          <h3>Mathematics</h3>
+          <p>Algebra, Geometry, Trigonometry आदि।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">💻</div>
+          <h3>Coding</h3>
+          <p>HTML, CSS, JavaScript, Python और Programming।</p>
+        </div>
+
+        <div class="card">
+          <div class="icon">🌍</div>
+          <h3>GK</h3>
+          <p>India, Bihar, Current Affairs और General Knowledge।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="timer">
+    <div class="container">
+      <div class="section-title">
+        <h2>⏱️ Study Timer</h2>
+        <p>Focus करके पढ़ाई करें</p>
+      </div>
+
+      <div class="card timer">
+        <div class="timer-display" id="timerDisplay">25:00</div>
+
+        <div class="timer-buttons">
+          <button class="btn" onclick="startTimer()">▶ Start</button>
+          <button class="btn" onclick="pauseTimer()">⏸ Pause</button>
+          <button class="btn" onclick="resetTimer()">🔄 Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="notes">
+    <div class="container">
+      <div class="section-title">
+        <h2>📒 My Notes</h2>
+        <p>अपने notes save करें</p>
+      </div>
+
+      <div class="card">
+        <input type="text" id="noteTitle" placeholder="Note का title" />
+        <textarea id="noteText" rows="5" placeholder="अपना note लिखें..."></textarea>
+        <button class="btn" onclick="saveNote()">💾 Save Note</button>
+        <div class="notes-list" id="notesList"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Daily Bihar Student Hub</p>
+    <p>Created by <span class="creator">Suman Kumar</span> 🎓</p>
+    <p>Made for Students ❤️</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("navLinks").classList.toggle("show");
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      const button = document.getElementById("themeBtn");
+
+      if (body.getAttribute("data-theme") === "dark") {
+        body.removeAttribute("data-theme");
+        button.textContent = "🌙 Dark";
+        localStorage.setItem("theme", "light");
+      } else {
+        body.setAttribute("data-theme", "dark");
+        button.textContent = "☀️ Light";
+        localStorage.setItem("theme", "dark");
+      }
+    }
+
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.setAttribute("data-theme", "dark");
+      document.getElementById("themeBtn").textContent = "☀️ Light";
+    }
+
+    function solveQuestion() {
+      const question = document.getElementById("question").value.trim();
+      const subject = document.getElementById("subject").value;
+      const answer = document.getElementById("answer");
+      const answerText = document.getElementById("answerText");
+
+      if (!question) {
+        alert("कृपया पहले question लिखें।");
+        return;
+      }
+
+      answer.style.display = "block";
+      answerText.innerHTML =
+        "<strong>Subject:</strong> " + subject +
+        "<br><br>" +
+        "<strong>Question:</strong> " + question +
+        "<br><br>" +
+        "🤖 <strong>Demo Explanation:</strong><br>" +
+        "यह Question Solver का demo response है। " +
+        "असली AI answer के लिए बाद में AI API/backend connect किया जा सकता है।";
+    }
+
+    function clearQuestion() {
+      document.getElementById("question").value = "";
+      document.getElementById("answer").style.display = "none";
+    }
+
+    function previewImage(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById("preview");
+      const status = document.getElementById("ocrStatus");
+
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+        status.innerHTML =
+          "✅ Image successfully uploaded. " +
+          "OCR text extraction के लिए OCR engine/API connect करना होगा।";
+      };
+      reader.readAsDataURL(file);
+    }
+
+    let quizIndex = 0;
+
+    const quizzes = [
+      {
+        q: "भारत की राजधानी क्या है?",
+        options: ["नई दिल्ली", "पटना", "मुंबई", "कोलकाता"],
+        answer: "नई दिल्ली"
+      },
+      {
+        q: "भारत का राष्ट्रीय पशु कौन है?",
+        options: ["शेर", "बाघ", "हाथी", "घोड़ा"],
+        answer: "बाघ"
+      },
+      {
+        q: "HTML का पूरा नाम क्या है?",
+        options: [
+          "Hyper Text Markup Language",
+          "High Text Machine Language",
+          "Hyper Tool Machine Language",
+          "Home Text Markup Language"
+        ],
+        answer: "Hyper Text Markup Language"
+      }
+    ];
+
+    function loadQuiz() {
+      const quiz = quizzes[quizIndex];
+      document.getElementById("quizQuestion").textContent = quiz.q;
+
+      const buttons = document.querySelectorAll(".option");
+      buttons.forEach((button, index) => {
+        button.textContent = String.fromCharCode(65 + index) + ". " + quiz.options[index];
+        button.onclick = function () {
+          checkAnswer(this, quiz.options[index]);
+        };
+      });
+
+      document.getElementById("quizResult").textContent = "";
+    }
+
+    function checkAnswer(button, answer) {
+      const correct = quizzes[quizIndex].answer;
+      const result = document.getElementById("quizResult");
+
+      if (answer === correct) {
+        result.textContent = "✅ सही उत्तर!";
+        result.style.color = "var(--success)";
+      } else {
+        result.textContent = "❌ गलत। सही उत्तर: " + correct;
+        result.style.color = "var(--danger)";
+      }
+    }
+
+    function nextQuestion() {
+      quizIndex++;
+      if (quizIndex >= quizzes.length) {
+        quizIndex = 0;
+      }
+      loadQuiz();
+    }
+
+    loadQuiz();
+
+    let timerSeconds = 25 * 60;
+    let timerInterval = null;
+
+    function updateTimer() {
+      const minutes = Math.floor(timerSeconds / 60);
+      const seconds = timerSeconds % 60;
+
+      document.getElementById("timerDisplay").textContent =
+        String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+
+      timerInterval = setInterval(function () {
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          alert("🎉 Study session complete!");
+          return;
+        }
+
+        timerSeconds--;
+        updateTimer();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerSeconds = 25 * 60;
+      updateTimer();
+    }
+
+    updateTimer();
+
+    function getNotes() {
+      return JSON.parse(localStorage.getItem("studentNotes") || "[]");
+    }
+
+    function saveNote() {
+      const title = document.getElementById("noteTitle").value.trim();
+      const text = document.getElementById("noteText").value.trim();
+
+      if (!title || !text) {
+        alert("Title और Note दोनों लिखें।");
+        return;
+      }
+
+      const notes = getNotes();
+      notes.push({
+        title: title,
+        text: text,
+        date: new Date().toLocaleDateString("hi-IN")
+      });
+
+      localStorage.setItem("studentNotes", JSON.stringify(notes));
+      document.getElementById("noteTitle").value = "";
+      document.getElementById("noteText").value = "";
+      displayNotes();
+    }
+
+    function displayNotes() {
+      const notes = getNotes();
+      const list = document.getElementById("notesList");
+      list.innerHTML = "";
+
+      notes.forEach((note, index) => {
+        const div = document.createElement("div");
+        div.className = "note";
+
+        div.innerHTML = `
+          <div>
+            <strong>${escapeHTML(note.title)}</strong>
+            <br>
+            <small>${escapeHTML(note.date)}</small>
+            <p>${escapeHTML(note.text)}</p>
+          </div>
+          <button class="delete-btn" onclick="deleteNote(${index})">Delete</button>
+        `;
+
+        list.appendChild(div);
+      });
+    }
+
+    function deleteNote(index) {
+      const notes = getNotes();
+      notes.splice(index, 1);
+      localStorage.setItem("studentNotes", JSON.stringify(notes));
+      displayNotes();
+    }
+
+    function escapeHTML(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    displayNotes();
+  </script>
+</body>
+</html>
